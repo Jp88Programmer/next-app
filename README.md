@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Project
 
-## Getting Started
+This project demonstrates the use of dynamic routing, parallel routing, and intercepting routes in Next.js using the App Router.
 
-First, run the development server:
+## Table of Contents
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- [Dynamic Routing](#dynamic-routing)
+- [Parallel Routing](#parallel-routing)
+- [Intercepting Routes](#intercepting-routes)
+- [How to Run the Project](#how-to-run-the-project)
+
+## Dynamic Routing
+
+Dynamic routing in Next.js allows you to create pages that match dynamic segments in the URL. For example, you can create a file named `[photoId]/page.tsx` inside the `app/photo` directory to match any URL with a dynamic `photoId` parameter.
+
+Example:
+```tsx
+// filepath: /D:/Jayendra/Next.js/next-app/src/app/photo/[photoId]/page.tsx
+import { imageData } from "@/data/imageData";
+import React from "react";
+
+const page = ({ params }: { params: { photoId: string } }) => {
+  const photoId = Number(params.photoId);
+  const ImageComponent = imageData[photoId].Icon;
+  const name = imageData[photoId].name;
+  const usecase = imageData[photoId].usecase;
+  return (
+    <div className="flex w-full p-24 border-2 border-blue-400 rounded-lg shadow-blue-400 shadow-md">
+      <ImageComponent size={100} color="blue" />
+      <div className="flex flex-col gap-2 ml-4">
+        <div className="text-base font-bold">{name}</div>
+        <div className="text-sm">{usecase}</div>
+      </div>
+    </div>
+  );
+};
+
+export default page;
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Parallel Routing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Parallel routing allows you to render multiple routes in parallel. This can be useful for layouts that need to display multiple pieces of content simultaneously.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Example:
+```tsx
+// filepath: /d:/Jayendra/Next.js/next-app/src/app/dashboard/page.tsx
+import React from "react";
 
-## Learn More
+const page = () => {
+  return (
+    <div className=" flex w-full p-24 h-10">
+      <h1> This the Dashboard page</h1>
+    </div>
+  );
+};
 
-To learn more about Next.js, take a look at the following resources:
+export default page;
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Intercepting Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Intercepting routes allows you to handle specific routes differently, such as showing a modal or redirecting to another page.
 
-## Deploy on Vercel
+Example:
+```tsx
+// filepath: /d:/Jayendra/Next.js/next-app/src/app/photo/(.)[photoId]/page.tsx
+import PhotoGallery from "@/components/InterceptingRoute/PhotoGallery";
+import React from "react";
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+const page =  ({ params }: { params: { photoId: string } }) => {
+  const photoId = params.photoId;
+  console.log("🚀 ~ page ~ photoId:", photoId)
+  return <PhotoGallery photoId={photoId} />;
+};
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+export default page;
+```
+
+## How to Run the Project
+
+1. Clone the repository:
+     ```bash
+     git clone https://github.com/your-username/next-app.git
+     ```
+
+2. Navigate to the project directory:
+     ```bash
+     cd next-app
+     ```
+
+3. Install the dependencies:
+     ```bash
+     npm install
+     ```
+
+4. Run the development server:
+     ```bash
+     npm run dev
+     ```
+
+5. Open your browser and navigate to `http://localhost:3000`.
+
+Enjoy exploring the project!
